@@ -1,6 +1,7 @@
-# BasesDeDatos
+# Base De Datos
 
 # Taller Consultas basicas MYSQL
+
 ## Consultas Básicas
 
 **1. Selección de países en el continente 'Asia'**
@@ -16,4 +17,5 @@ $$
 ```sql
 SELECT * from country WHERE Continent = 'ASIA';
 ```
+
 ![image](https://github.com/user-attachments/assets/cbf8aa53-326d-4f7e-84fe-1862e720de5c)
