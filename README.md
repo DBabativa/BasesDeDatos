@@ -50,3 +50,18 @@ SELECT Language FROM countrylanguage;
 ```
 
 ![image](https://github.com/user-attachments/assets/2101dcea-5c52-40b2-8461-58fdf6c3fd1d)
+
+**4. Selección de países con población mayor a 100 millones**
+
+**Álgebra relacional**:  
+
+$$
+\sigma_{\text{Population} > 100000000}(\text{Country})
+$$
+
+**SQL equivalente**:  
+```sql
+select * from country where Population>100000000;
+```
+
+![image](https://github.com/user-attachments/assets/e948257e-264e-4a90-b211-717bcc95934e)
