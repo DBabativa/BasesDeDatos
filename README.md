@@ -283,6 +283,29 @@ $$
 \pi_{\text{Continent, AVG(LifeExpectancy)}}(\text{Country}) \text{ GROUP BY Continent}
 $$
 
+
+
+
+
+
+
+Codigos hechos en clase 
+SELECT * from country WHERE Continent = 'ASIA';
+SELECT distinct COUNT(Name) FROM CITY; 
+SELECT Language FROM countrylanguage;
+select * from country where Population>100000000;
+Select Name, continent From Country order by Name; 
+select max(Population) FROM city;
+SELECT Name FROM country where Name LIKE '%Republic%';
+Select AVG (Population) From country Where continent = 'Europe';
+Select Name, Population From city order by Population desc limit 1;
+Select Name, Population From city;
+Select Name, Population From city where MAX(Population);
+
+Select MAX(Population) from city;
+Select Name, Population From city order by Population desc limit 5;
+
+
 **SQL equivalente**:  
 ```sql
 
