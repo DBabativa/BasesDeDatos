@@ -91,8 +91,9 @@ $$
 
 **SQL equivalente**:  
 ```sql
-
+Select Name, Population From city order by Population desc limit 1;
 ```
+![image](https://github.com/user-attachments/assets/634b3771-2355-456d-8449-99edc523b359)
 
 
 **7. Selección de países que tienen 'Republic' en su nombre**
