@@ -65,3 +65,32 @@ select * from country where Population>100000000;
 ```
 
 ![image](https://github.com/user-attachments/assets/e948257e-264e-4a90-b211-717bcc95934e)
+
+**5. Listar nombres de países y continentes ordenados alfabéticamente por nombre de país**
+
+**Álgebra relacional**:  
+
+$$
+\pi_{\text{Name}, \text{Continent}}(\text{Country}) \text{ ORDER BY Name}
+$$
+
+**SQL equivalente**:  
+```sql
+Select Name, continent From Country order by Name; 
+```
+
+![image](https://github.com/user-attachments/assets/38aaae18-d183-4f53-a6f8-666f7fe44612)
+
+**6. Obtener la ciudad con mayor población**
+
+**Álgebra relacional**:  
+
+$$
+\text{MAX}(\pi_{\text{Population}}(\text{City}))
+$$
+
+**SQL equivalente**:  
+```sql
+
+```
+
