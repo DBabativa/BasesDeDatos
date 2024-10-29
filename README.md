@@ -109,6 +109,8 @@ $$
 
 ```
 
+
+
 **8. Listar los 5 países más poblados**
 
 **Álgebra relacional**:  
@@ -119,8 +121,11 @@ $$
 
 **SQL equivalente**:  
 ```sql
-
+Select Name, Population From city order by Population desc limit 5;
 ```
+
+![image](https://github.com/user-attachments/assets/fb6f64ce-6071-4adb-97fa-7c3fd37c07d2)
+
 
 **9. Calcular la población promedio de los países en el continente 'Europe'**
 
