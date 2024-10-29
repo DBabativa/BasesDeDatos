@@ -106,9 +106,10 @@ $$
 
 **SQL equivalente**:  
 ```sql
-
+SELECT Name FROM country where Name LIKE '%Republic%';
 ```
 
+![image](https://github.com/user-attachments/assets/9cedcd6b-2ac7-4d1e-8f09-2e110fea1cc9)
 
 
 **8. Listar los 5 países más poblados**
