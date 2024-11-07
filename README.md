@@ -284,6 +284,7 @@ $$
 $$
 \pi_{\text{Continent, AVG(LifeExpectancy)}}(\text{Country}) \text{ GROUP BY Continent}
 $$
+
 **SQL equivalente**:  
 ```sql
 
