@@ -1,0 +1,142 @@
+# Base De Datos
+
+# Taller Consultas nivel medio MYSQL
+
+#Consultas
+
+
+### 1. Encuentra los países que tienen un idioma oficial.
+**Objetivo:** Identificar los países con al menos un idioma oficial registrado en la tabla `countrylanguage`.
+- **Álgebra Relacional:** 
+  $$\pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 2. Lista los países que tienen más de un idioma oficial.
+**Objetivo:** Identificar los países con varios idiomas oficiales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{CountryCode}} (\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}))\ \ \text{GROUP BY CountryCode HAVING COUNT(*) > 1}$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 3. Encuentra los países que tienen el mismo continente que Japón.
+**Objetivo:** Listar los países que comparten el mismo continente que Japón.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Name}} (\text{Country} \bowtie_{\text{Continent} = 'Asia'} \text{Country})$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 4. Encuentra las ciudades que tienen población mayor a 5 millones y están en América del Sur.
+**Objetivo:** Filtrar ciudades por población y continente.
+- **Álgebra Relacional:**
+  $$\pi_{\text{City.Name}} (\sigma_{\text{City.Population} > 5000000 \land \text{Country.Continent} = 'South America'}(\text{City} \bowtie \text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 5. Encuentra los países que no tienen ningún idioma oficial.
+**Objetivo:** Listar los países sin idioma oficial.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\text{Country}) - \pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'}(\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 6. Encuentra los idiomas que son oficiales en al menos dos países.
+**Objetivo:** Identificar idiomas que sean oficiales en varios países.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}) \ \text{GROUP BY Language HAVING COUNT(DISTINCT CountryCode) >= 2})$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 7. Lista los países y su capital.
+**Objetivo:** Obtener la relación entre los países y sus capitales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Name}, \text{City.Name}} (\text{Country} \bowtie_{\text{Country.Capital} = \text{City.ID}} \text{City})$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 8. Encuentra los países que tienen una población mayor que Alemania.
+**Objetivo:** Comparar población con un país específico.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Name}}(\sigma_{\text{Population} > ( \text{SELECT Population FROM Country WHERE Name = 'Germany'} ) }(\text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 9. Encuentra los idiomas oficiales de Europa.
+**Objetivo:** Listar los idiomas oficiales de países europeos.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{Country.Continent} = 'Europe'} (\text{Country} \bowtie \text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 10. Encuentra los países sin ciudades registradas en la tabla `City`.
+**Objetivo:** Detectar países sin representación en la tabla de ciudades.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\text{Country}) - \pi_{\text{CountryCode}}(\text{City})$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 11. Muestra la población total de cada continente.
+**Objetivo:** Calcular la población por continente.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Continent}, \text{SUM(Population)}} (\text{Country} \ \text{GROUP BY Continent})$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 12. Encuentra los países en los que la esperanza de vida es menor al promedio global.
+**Objetivo:** Filtrar países con esperanza de vida baja en comparación con el promedio.
+- **Álgebra Relacional:** $$\pi_{\text{Name}}(\sigma_{\text{LifeExpectancy} < \text{AVG(LifeExpectancy)}}(\text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 13. Encuentra los países en Asia sin idioma oficial registrado.
+**Objetivo:** Listar países asiáticos sin idiomas oficiales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\sigma_{\text{Continent} = 'Asia'} (\text{Country})) - \pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'}(\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 14. Lista los idiomas que son oficiales en países con esperanza de vida mayor a 80.
+**Objetivo:** Identificar idiomas en países con alta esperanza de vida.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{Country.LifeExpectancy} > 80} (\text{Country} \bowtie \text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
+
+### 15. Encuentra los países con más de 10 ciudades en la tabla `City`.
+**Objetivo:** Identificar países con una gran cantidad de ciudades registradas.
+- **Álgebra Relacional:**
+
+$$ \pi_{\text{CountryCode}} (\text{City} \ \text{GROUP BY CountryCode HAVING COUNT(*) > 10}) $$
+
+- **Consulta en SQL:**
+  ```sql
+  
+  ```
