@@ -493,3 +493,369 @@ SELECT Name, Region FROM country ORDER BY Region ASC;
 
 ![image](https://github.com/user-attachments/assets/8e23c555-2af6-48da-9095-06bdfae07fb7)
 
+# Consultas Nivel medio
+
+
+### 1. Encuentra los países que tienen un idioma oficial.
+**Objetivo:** Identificar los países con al menos un idioma oficial registrado en la tabla `countrylanguage`.
+- **Álgebra Relacional:** 
+  $$\pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+   SELECT DISTINCT CountryCode FROM countrylanguage WHERE IsOfficial = 'T';
+  ```
+
+  ![image](https://github.com/user-attachments/assets/4102c75b-8f4d-42b2-9c74-11b1717884da)
+
+### 2. Lista los países que tienen más de un idioma oficial.
+**Objetivo:** Identificar los países con varios idiomas oficiales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{CountryCode}} (\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}))\ \ \text{GROUP BY CountryCode HAVING COUNT(*) > 1}$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT CountryCode FROM countrylanguage WHERE IsOfficial ='T' group by CountryCode HAVING COUNT(*) >1;
+  ```
+
+![image](https://github.com/user-attachments/assets/2bd4eab5-cda2-4b29-8bf7-d42975d0c0fd)
+
+### 3. Encuentra los países que tienen el mismo continente que Japón.
+**Objetivo:** Listar los países que comparten el mismo continente que Japón.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Name}} (\text{Country} \bowtie_{\text{Continent} = 'Asia'} \text{Country})$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Name FROM country WHERE Continent = 'Asia';
+  ```
+
+![image](https://github.com/user-attachments/assets/e02948ff-c13e-4c1d-ac06-faa923046eac)
+
+### 4. Encuentra las ciudades que tienen población mayor a 5 millones y están en América del Sur.
+**Objetivo:** Filtrar ciudades por población y continente.
+- **Álgebra Relacional:**
+  $$\pi_{\text{City.Name}} (\sigma_{\text{City.Population} > 5000000 \land \text{Country.Continent} = 'South America'}(\text{City} \bowtie \text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT city.Name FROM City JOIN country ON city.CountryCode = country.Code
+   WHERE city.Population > 5000000 AND country.Continent='South America';
+  ```
+
+![image](https://github.com/user-attachments/assets/1ec6de55-41f4-4325-977e-bb52233703b9)
+
+### 5. Encuentra los países que no tienen ningún idioma oficial.
+**Objetivo:** Listar los países sin idioma oficial.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\text{Country}) - \pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'}(\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+   SELECT Code
+   FROM Country WHERE Code NOT IN (
+   SELECT CountryCode
+   FROM CountryLanguage
+   WHERE IsOfficial = 'T'
+   );
+  ```
+
+![image](https://github.com/user-attachments/assets/722b99df-3f47-40bd-b771-2a0ae2ed9591)
+
+### 6. Encuentra los idiomas que son oficiales en al menos dos países.
+**Objetivo:** Identificar idiomas que sean oficiales en varios países.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{IsOfficial} = 'T'} (\text{CountryLanguage}) \ \text{GROUP BY Language HAVING COUNT(DISTINCT CountryCode) >= 2})$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Language FROM countrylanguage WHERE Isofficial ='T' 
+   GROUP BY Language HAVING COUNT(DISTINCT CountryCode) >= 2; 
+  ```
+
+![image](https://github.com/user-attachments/assets/86dbb3a4-b007-4719-bedd-cd2c8f9ebdd7)
+
+### 7. Lista los países y su capital.
+**Objetivo:** Obtener la relación entre los países y sus capitales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Name}, \text{City.Name}} (\text{Country} \bowtie_{\text{Country.Capital} = \text{City.ID}} \text{City})$$
+- **Consulta en SQL:**
+  ```sql
+   SELECT Country.Name AS CountryName, City.Name AS CapitalName
+   FROM Country JOIN City ON Country.Capital = City.ID;
+  ```
+  
+![image](https://github.com/user-attachments/assets/74cb06e7-2714-4250-b737-7df34b3a6a65)
+
+### 8. Encuentra los países que tienen una población mayor que Alemania.
+**Objetivo:** Comparar población con un país específico.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Name}}(\sigma_{\text{Population} > ( \text{SELECT Population FROM Country WHERE Name = 'Germany'} ) }(\text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Name FROM country WHERE Population > (SELECT population FROM country WHERE Name = 'Germany');
+  ```
+
+![image](https://github.com/user-attachments/assets/1d10d0f3-34e0-42f6-bd11-4f2af4ebbd9d)
+
+### 9. Encuentra los idiomas oficiales de Europa.
+**Objetivo:** Listar los idiomas oficiales de países europeos.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{Country.Continent} = 'Europe'} (\text{Country} \bowtie \text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT DISTINCT CountryLanguage.Language
+   FROM Country JOIN CountryLanguage ON Country.Code = CountryLanguage.CountryCode
+   WHERE Country.Continent = 'Europe' AND CountryLanguage.IsOfficial = 'T';
+  ```
+
+![image](https://github.com/user-attachments/assets/5af570f6-de9e-4d5d-bac1-30eb25839b65)
+
+### 10. Encuentra los países sin ciudades registradas en la tabla `City`.
+**Objetivo:** Detectar países sin representación en la tabla de ciudades.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\text{Country}) - \pi_{\text{CountryCode}}(\text{City})$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Name FROM Country
+   WHERE Code NOT IN (
+    SELECT CountryCode
+    FROM City	
+   );
+  ```
+  
+![image](https://github.com/user-attachments/assets/3992dc2a-8a26-4243-af30-d1a40559be66)
+
+### 11. Muestra la población total de cada continente.
+**Objetivo:** Calcular la población por continente.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Continent}, \text{SUM(Population)}} (\text{Country} \ \text{GROUP BY Continent})$$
+- **Consulta en SQL:**
+  ```sql
+   SELECT Continent, SUM(Population) AS total FROM Country
+   GROUP BY Continent;
+  ```
+
+![image](https://github.com/user-attachments/assets/4d598beb-ca44-4525-902f-75cf38870a5d)
+
+### 12. Encuentra los países en los que la esperanza de vida es menor al promedio global.
+**Objetivo:** Filtrar países con esperanza de vida baja en comparación con el promedio.
+- **Álgebra Relacional:** $$\pi_{\text{Name}}(\sigma_{\text{LifeExpectancy} < \text{AVG(LifeExpectancy)}}(\text{Country}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Name FROM Country
+  WHERE LifeExpectancy < (SELECT AVG(LifeExpectancy) FROM Country);
+  ```
+![image](https://github.com/user-attachments/assets/926db7f0-d942-4d23-ba41-f3247fdd9c85)
+
+
+### 13. Encuentra los países en Asia sin idioma oficial registrado.
+**Objetivo:** Listar países asiáticos sin idiomas oficiales.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Country.Code}}(\sigma_{\text{Continent} = 'Asia'} (\text{Country})) - \pi_{\text{CountryCode}}(\sigma_{\text{IsOfficial} = 'T'}(\text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT Code FROM Country  WHERE Continent = 'Asia'
+  AND Code NOT IN (
+      SELECT CountryCode
+      FROM CountryLanguage
+      WHERE IsOfficial = 'T'
+  );
+  ```
+  
+![image](https://github.com/user-attachments/assets/adf2516a-f5cb-4fc6-83e8-9d6101e4206a)
+
+### 14. Lista los idiomas que son oficiales en países con esperanza de vida mayor a 80.
+**Objetivo:** Identificar idiomas en países con alta esperanza de vida.
+- **Álgebra Relacional:**
+  $$\pi_{\text{Language}} (\sigma_{\text{Country.LifeExpectancy} > 80} (\text{Country} \bowtie \text{CountryLanguage}))$$
+- **Consulta en SQL:**
+  ```sql
+  SELECT DISTINCT Language FROM Country JOIN CountryLanguage
+  ON Country.Code = CountryLanguage.CountryCode WHERE Country.LifeExpectancy > 80
+  AND CountryLanguage.IsOfficial = 'T';
+  ```
+
+![image](https://github.com/user-attachments/assets/10c54068-4091-4603-afb6-f7e3c67beaaf)
+
+### 15. Encuentra los países con más de 10 ciudades en la tabla `City`.
+**Objetivo:** Identificar países con una gran cantidad de ciudades registradas.
+- **Álgebra Relacional:**
+
+$$ \pi_{\text{CountryCode}} (\text{City} \ \text{GROUP BY CountryCode HAVING COUNT(*) > 10}) $$
+
+- **Consulta en SQL:**
+  ```sql
+  SELECT CountryCode FROM City GROUP BY CountryCode HAVING COUNT(*) > 10;
+  ```
+
+![image](https://github.com/user-attachments/assets/94d53b20-e35e-466b-b8a7-b95797220f3a)
+
+# Consultas propuestas
+
+### 1. Encuentra los países con un PIB (GNP) mayor al promedio mundial.
+
+**Álgebra relacional:**
+
+$$
+\pi_{Name}(\sigma_{GNP > AVG(GNP)}(Country))
+$$
+
+**SQL equivalente:**
+
+```sql
+SELECT Name FROM Country WHERE GNP > (SELECT AVG(GNP) FROM Country);
+```
+
+![image](https://github.com/user-attachments/assets/0e7800f0-f4e9-4a24-a180-f1bb93204462)
+
+### 2. Lista las ciudades con más de un millón de habitantes en países de América del Sur.
+
+**Álgebra relacional:**
+
+$$ 
+\pi_{City.Name}(\sigma_{Population > 1000000 \land Continent = 'South America'}(City \bowtie Country)) 
+$$
+
+**SQL equivalente:**
+```sql
+SELECT City.Name FROM City
+JOIN Country ON City.CountryCode = Country.Code
+WHERE City.Population > 1000000 AND Country.Continent = 'South America';
+```
+
+![image](https://github.com/user-attachments/assets/307946a6-60b1-47a5-bd4a-8700ce74094a)
+
+### 3. Encuentra los continentes con más de 10 países registrados.
+
+**Álgebra relacional:**
+
+$$ 
+\pi_{Continent}(Country \text{ GROUP BY } Continent \text{ HAVING COUNT(*) > 10}) 
+$$
+
+**SQL equivalente:**
+```sql
+SELECT Continent FROM Country GROUP BY Continent HAVING COUNT(*) > 10;
+```
+
+![image](https://github.com/user-attachments/assets/3aa003ae-d21c-4da4-b4ef-8aa73b3924d6)
+
+### 4. ¿Cuáles son las capitales de los países en América del Sur?
+
+**Álgebra relacional:**
+
+$$ 
+\pi_{City.Name}(\sigma_{Continent = 'South America'}(Country) \bowtie City) 
+$$
+
+**SQL equivalente:**
+```sql
+SELECT City.Name FROM Country
+JOIN City ON Country.Capital = City.ID
+WHERE Country.Continent = 'South America';
+```
+
+![image](https://github.com/user-attachments/assets/dffe3a33-b504-4943-972b-236971ec274f)
+
+### 5. ¿Qué países tienen una población total menor que la de Alemania?
+
+**Álgebra relacional:**
+
+$$ 
+\pi_{Name}(\sigma_{Population < (SELECT Population FROM Country WHERE Name = 'Germany')}(Country)) 
+$$
+
+**SQL equivalente:**
+```sql
+  SELECT Name FROM Country WHERE Population > (SELECT Population FROM Country WHERE Name = 'Germany');
+```
+
+![image](https://github.com/user-attachments/assets/caa71843-8de7-406f-9cc4-7b6c9b9dd6ed)
+
+### 6. Lista los países donde no se habla inglés como idioma oficial.
+
+**Álgebra relacional:**
+
+$$
+\pi_{Name}(Country - \pi_{Country.Name}(\sigma_{Language = 'English' \land IsOfficial = 'T'}(Country \bowtie CountryLanguage))) 
+$$ 
+
+**SQL equivalente:**
+
+```sql
+ SELECT Name FROM Country  
+WHERE Code NOT IN (  
+  SELECT CountryCode  
+  FROM CountryLanguage  
+  WHERE Language = 'English'  
+    AND IsOfficial = 'T'  
+);  
+```
+
+![image](https://github.com/user-attachments/assets/39b30f33-37b9-4483-a781-975ee27c1955)
+
+### 7. Encuentra los países con mayor densidad de población que Japón.
+
+**Álgebra relacional:**
+
+$$
+\pi_{Name}(\sigma_{LifeExpectancy < \text{AVG}(LifeExpectancy)}(Country))
+$$
+
+**SQL equivalente:**
+
+```sql
+SELECT Name, Population / SurfaceArea AS Density FROM Country
+WHERE Population / SurfaceArea > (
+    SELECT Population / SurfaceArea FROM Country WHERE Name = 'Japan'
+)
+ORDER BY Density DESC;
+```
+
+![image](https://github.com/user-attachments/assets/c068cff3-b45b-4d2a-a809-9034466974a7)
+
+### 8. Lista las ciudades con nombre que comience con la letra 'Z'.
+
+**Álgebra relacional:**
+
+$$
+\pi_{Name}(\sigma_{Name \, \text{LIKE} \, 'Z\text{}'}(City))
+$$
+
+**SQL equivalente:**
+
+```sql
+ SELECT Name FROM City WHERE Name LIKE 'Z%';
+```
+
+![image](https://github.com/user-attachments/assets/fd68054b-05ca-49ac-a1ac-2a255d78b866)
+
+### 9. Lista las ciudades capitales junto con su población.
+
+**Álgebra relacional
+
+$$
+\pi_{City.Name, City.Population}(City \bowtie_{City.ID = Country.Capital}(Country))
+$$
+
+**SQL equivalente:**
+
+```sql
+ SELECT City.Name, City.Population FROM City JOIN Country ON City.ID = Country.Capital;
+```
+
+![image](https://github.com/user-attachments/assets/b46c5eed-6387-4c3d-853b-5558ecd0700c)
+
+### 10. Encuentra los países con más de 5 idiomas oficiales.
+
+**Álgebra relacional:**
+
+$$
+\pi_{Name}(Country \bowtie (\sigma_{COUNT(IsOfficial) > 5}(CountryLanguage))) 
+$$
+
+**SQL equivalente:**
+
+```sql
+ SELECT Country.Name FROM Country
+JOIN CountryLanguage ON Country.Code = CountryLanguage.CountryCode
+GROUP BY Country.Name HAVING COUNT(CountryLanguage.CountryCode) > 5;
+```
+
+![image](https://github.com/user-attachments/assets/be4f9a5a-b721-4c01-bb7a-9b2a09c3e786)
+
