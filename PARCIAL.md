@@ -1,6 +1,6 @@
 # Base De Datos
 
-# Parcial consultas Mysql en HackerRank
+# Parcial Tercer corte consultas Mysql en HackerRank
 
 ### 1. Consulta "1.Weather Observation Station 9"
 
