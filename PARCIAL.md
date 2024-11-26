@@ -35,7 +35,7 @@ WHERE (City LIKE 'A%' OR City LIKE 'E%' OR City LIKE 'I%' OR City LIKE 'O%' OR C
 ```
 ![image](https://github.com/user-attachments/assets/e53553bb-0df1-40cc-a251-584578e21750)
 
-# Consultas Básicas Parcial
+# Consultas Básicas Parcial segun la base de datos
 
 ### 1. Encuentra los departamentos que tienen más de 2300 empleados. Organizalos de mayor a menor en cantidad de empleados 
    ```sql
