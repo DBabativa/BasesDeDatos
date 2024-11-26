@@ -150,7 +150,7 @@ ORDER BY e.emp_no;
    
    ```
 
-### 16. Listar los nombres de departamentos junto con el número de empleados que tienen un salario mayor a 70.000 
+### 12. Listar los nombres de departamentos junto con el número de empleados que tienen un salario mayor a 70.000 
    ```sql
    
    ```
